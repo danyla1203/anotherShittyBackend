@@ -1,0 +1,11 @@
+{
+  "name": "anotherBitch",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "latest",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@types/express": "latest"
+  }
+}
