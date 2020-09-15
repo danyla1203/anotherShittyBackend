@@ -6,8 +6,8 @@ const app = express();
 const controllers = [
 
 ];
-const boostrap = new Bootstrap(controllers);
+const bootstrap = new Bootstrap(controllers);
 
-boostrap.start(app);
+bootstrap.start(app);
 
 app.listen(3000);
