@@ -22,6 +22,7 @@ export function post(path: string) {
             method: "POST",
             path: path,
             handlerName: methodName
-        }
+        };
+        Reflect.defineMetadata(path, handler, target);
     }
 }
