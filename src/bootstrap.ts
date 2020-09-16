@@ -3,7 +3,7 @@ import {Application, Request, Response} from "express";
 type handler = {
     method: string,
     path: string,
-    handleFunc: (req: Request) => any
+    handlerFunc: (req: Request) => any
 }
 
 export class Bootstrap {
@@ -15,27 +15,42 @@ export class Bootstrap {
 
     getAllHandlersFromControllers(): handler[] {
         let handlers = [];
-        for(let i = 0; i < this.controllers.length; i++) {
+        for (let i = 0; i < this.controllers.length; i++) {
             let metaKeys = Reflect.getMetadataKeys(this.controllers[i]);
             for (let k = 0; k < metaKeys.length; k++) {
                 let handler: handler = Reflect.getMetadata(metaKeys[k], this.controllers[i]);
-                handler.handleFunc = handler.handleFunc.bind(this.controllers[k]);
+                handler.handlerFunc = handler.handlerFunc.bind(this.controllers[k]);
                 handlers.push(handler);
             }
         }
         return handlers;
     }
 
-    getHandler(url: string, handlers: handler[]) {
+    getHandler(url: string, handlers: handler[]): handler {
+        let splitedUrl = url.split("/");
 
+        for (let i = 0; i < handlers.length; i++) {
+            let splitedHandlerPath = handlers[i].path.split("/");
+
+            for (let k = 0; k < splitedUrl.length; k++) {
+                if (splitedHandlerPath[k][0] == ":") {
+                    //TODO: push var name and value to request object
+                    continue;
+                }
+                if (splitedHandlerPath[k] != splitedUrl[k]) {
+                    break;
+                }
+            }
+            return handlers[i];
+        }
     }
 
     start(expressApp: Application) {
 
         expressApp.all("*", (req: Request, res: Response) => {
-            let handlers = this.getAllHandlersFromControllers();
+            let handlers: handler[] = this.getAllHandlersFromControllers();
             let url = req.url;
-            let handler = this.getHandler(url, handlers);
+            let handler: handler = this.getHandler(url, handlers);
         })
 
     }
