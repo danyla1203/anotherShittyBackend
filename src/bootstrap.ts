@@ -54,6 +54,13 @@ export class Bootstrap {
             let handlers: handler[] = this.getAllHandlersFromControllers();
             let url = req.url;
             let handler: handler = this.getHandler(url, handlers);
+
+            try {
+                let result: any = handler.handlerFunc(req);
+                res.json(result);
+            } catch (e) {
+                res.json(e);
+            }
         })
 
     }
