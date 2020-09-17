@@ -26,12 +26,15 @@ export class Bootstrap {
         return handlers;
     }
 
-    getHandler(url: string, handlers: handler[]): handler {
+    getHandler(url: string, method: string, handlers: handler[]): handler {
         let splitedUrl = url.substring(1).split("/");
 
         for (let i = 0; i < handlers.length; i++) {
-            let splitedHandlerPath = handlers[i].path.substring(1).split("/");
+            if (method !== handlers[i].method) {
+                continue;
+            }
 
+            let splitedHandlerPath = handlers[i].path.substring(1).split("/");
             for (let k = 0; k < splitedUrl.length; k++) {
                 if (splitedHandlerPath[k][0] == ":") {
                     //TODO: push var name and value to request object
@@ -53,7 +56,8 @@ export class Bootstrap {
         expressApp.all("*", (req: Request, res: Response) => {
             let handlers: handler[] = this.getAllHandlersFromControllers();
             let url = req.url;
-            let handler: handler = this.getHandler(url, handlers);
+            let method = req.method;
+            let handler: handler = this.getHandler(url, method, handlers);
 
             try {
                 let result: any = handler.handlerFunc(req);
