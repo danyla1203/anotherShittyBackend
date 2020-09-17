@@ -27,10 +27,10 @@ export class Bootstrap {
     }
 
     getHandler(url: string, handlers: handler[]): handler {
-        let splitedUrl = url.split("/");
+        let splitedUrl = url.substring(1).split("/");
 
         for (let i = 0; i < handlers.length; i++) {
-            let splitedHandlerPath = handlers[i].path.split("/");
+            let splitedHandlerPath = handlers[i].path.substring(1).split("/");
 
             for (let k = 0; k < splitedUrl.length; k++) {
                 if (splitedHandlerPath[k][0] == ":") {
@@ -40,8 +40,11 @@ export class Bootstrap {
                 if (splitedHandlerPath[k] != splitedUrl[k]) {
                     break;
                 }
+                //on last iteration
+                if (k == splitedUrl.length - 1) {
+                    return handlers[i];
+                }
             }
-            return handlers[i];
         }
     }
 
