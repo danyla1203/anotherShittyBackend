@@ -27,7 +27,16 @@ export class Bootstrap {
     }
 
     setParamsFromUri(url: string, pattern: string, req: Request) {
+        let splitedUrl = url.substring(1).split("/");
+        let splitedPattern = pattern.substring(1).split("/");
 
+        for (let i = 0; i < splitedPattern.length; i++) {
+            if (splitedPattern[i][0] == ":") {
+                let paramName = splitedPattern[i].substring(1);
+                let value = splitedUrl[i].substring(0);
+                req.params[paramName] = value;
+            }
+        }
     }
 
     getHandler(url: string, method: string, handlers: handler[]): handler | undefined {
