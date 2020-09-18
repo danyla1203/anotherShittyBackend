@@ -26,20 +26,20 @@ export class Bootstrap {
         return handlers;
     }
 
-    getHandler(url: string, method: string, handlers: handler[]): handler {
+    setParamsFromUri(url: string, pattern: string, req: Request) {
+
+    }
+
+    getHandler(url: string, method: string, handlers: handler[]): handler | undefined {
         let splitedUrl = url.substring(1).split("/");
 
         for (let i = 0; i < handlers.length; i++) {
             if (method !== handlers[i].method) {
                 continue;
             }
-
             let splitedHandlerPath = handlers[i].path.substring(1).split("/");
             for (let k = 0; k < splitedUrl.length; k++) {
-                if (splitedHandlerPath[k][0] == ":") {
-                    //TODO: push var name and value to request object
-                    continue;
-                }
+                if (splitedHandlerPath[k][0] == ":") { continue }
                 if (splitedHandlerPath[k] != splitedUrl[k]) {
                     break;
                 }
@@ -52,12 +52,16 @@ export class Bootstrap {
     }
 
     start(expressApp: Application) {
-
+        let handlers: handler[] = this.getAllHandlersFromControllers();
         expressApp.all("*", (req: Request, res: Response) => {
-            let handlers: handler[] = this.getAllHandlersFromControllers();
             let url = req.url;
             let method = req.method;
-            let handler: handler = this.getHandler(url, method, handlers);
+            let handler: handler | undefined = this.getHandler(url, method, handlers);
+
+            if (typeof handler == "undefined") {
+                res.status(404).send("<h1>Error 404</h1>");
+            }
+            this.setParamsFromUri(url, handler.path, req);
 
             try {
                 let result: any = handler.handlerFunc(req);
@@ -66,6 +70,5 @@ export class Bootstrap {
                 res.json(e);
             }
         })
-
     }
 }
