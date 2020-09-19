@@ -47,14 +47,13 @@ export class Bootstrap {
                 continue;
             }
             let splitedHandlerPath = handlers[i].path.substring(1).split("/");
-            for (let k = 0; k < splitedUrl.length; k++) {
+            for (let k = 0; k < splitedUrl.length + 1; k++) {
+                if (k == splitedUrl.length) {
+                    return handlers[i];
+                }
                 if (splitedHandlerPath[k][0] == ":") { continue }
                 if (splitedHandlerPath[k] != splitedUrl[k]) {
                     break;
-                }
-                //on last iteration
-                if (k == splitedUrl.length - 1) {
-                    return handlers[i];
                 }
             }
         }
@@ -69,6 +68,7 @@ export class Bootstrap {
 
             if (typeof handler == "undefined") {
                 res.status(404).send("<h1>Error 404</h1>");
+                return;
             }
             this.setParamsFromUri(url, handler.path, req);
 
