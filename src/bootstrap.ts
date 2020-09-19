@@ -1,4 +1,5 @@
 import {Application, Request, Response} from "express";
+import {CustomError} from "./lib/Error";
 
 type handler = {
     method: string,
@@ -29,7 +30,6 @@ export class Bootstrap {
     setParamsFromUri(url: string, pattern: string, req: Request) {
         let splitedUrl = url.substring(1).split("/");
         let splitedPattern = pattern.substring(1).split("/");
-
         for (let i = 0; i < splitedPattern.length; i++) {
             if (splitedPattern[i][0] == ":") {
                 let paramName = splitedPattern[i].substring(1);
@@ -76,7 +76,7 @@ export class Bootstrap {
                 let result: any = handler.handlerFunc(req);
                 res.json(result);
             } catch (e) {
-                res.json(e);
+                res.json(e.errorData);
             }
         })
     }
