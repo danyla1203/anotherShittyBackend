@@ -20,7 +20,7 @@ export class Bootstrap {
             let metaKeys = Reflect.getMetadataKeys(this.controllers[i]);
             for (let k = 0; k < metaKeys.length; k++) {
                 let handler: handler = Reflect.getMetadata(metaKeys[k], this.controllers[i]);
-                handler.handlerFunc = handler.handlerFunc.bind(this.controllers[k]);
+                handler.handlerFunc = handler.handlerFunc.bind(this.controllers[i]);
                 handlers.push(handler);
             }
         }
