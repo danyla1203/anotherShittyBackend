@@ -19,3 +19,21 @@ export class NotFoundErr extends  CustomError {
         });
     }
 }
+
+export class NoSuchUser extends  CustomError {
+    constructor() {
+        super({
+            statusCode:401,
+            statusText: "User with such name doesn't exist"
+        })
+    }
+}
+
+export class BadPassword extends CustomError {
+    constructor() {
+        super({
+            statusCode:401,
+            statusText: "Bad password"
+        })
+    }
+}
