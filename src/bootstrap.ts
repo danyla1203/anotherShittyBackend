@@ -1,5 +1,7 @@
+import * as multer from "multer";
+import * as express from "express";
+
 import {Application, Request, Response} from "express";
-import {CustomError} from "./lib/Error";
 
 type handler = {
     method: string,
@@ -61,6 +63,12 @@ export class Bootstrap {
 
     start(expressApp: Application) {
         let handlers: handler[] = this.getAllHandlersFromControllers();
+        const uploads = multer();
+
+        expressApp.use(express.json());
+        expressApp.use(express.urlencoded({ extended: true }));
+        expressApp.use(uploads.array());
+
         expressApp.all("*", (req: Request, res: Response) => {
             let url = req.url;
             let method = req.method;
