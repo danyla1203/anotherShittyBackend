@@ -1,7 +1,8 @@
 import {RedisClient} from "redis";
 import {redisClient} from "../index";
+import {AuthorizationRepositoryI} from "../models/AuthorizationModel";
 
-export class AuthorizationRepository {
+export class AuthorizationRepository implements AuthorizationRepositoryI{
     connection: RedisClient = redisClient;
     constructor() {
         //if no user_sessions hash -> create new hash;
@@ -10,6 +11,8 @@ export class AuthorizationRepository {
         }
     }
 
+    findUser(userName: string) {
 
+    }
 
 }
