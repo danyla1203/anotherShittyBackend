@@ -12,7 +12,10 @@ export class CustomError extends Error{
 }
 
 export class NotFoundErr extends  CustomError {
-    constructor() {
-        super({ statusCode: 404, statusText: "Error 404" });
+    constructor(statusText?: string) {
+        super({
+            statusCode: 404,
+            statusText: statusText ? statusText : "Error 404"
+        });
     }
 }
