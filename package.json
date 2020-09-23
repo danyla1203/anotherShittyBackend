@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "latest",
+    "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@types/express": "latest"
+    "@types/express": "latest",
+    "@types/redis": "^2.8.27"
   }
 }
