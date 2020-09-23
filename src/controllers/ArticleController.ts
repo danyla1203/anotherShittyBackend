@@ -16,15 +16,13 @@ export class ArticleController {
     @get("/article/:article_id")
     article(req: Request) {
         let article_id: number = parseInt(req.params["article_id"]);
-
         let article = this.articleModel.findArticle(article_id);
-        return article
+        return article;
     }
 
     @get("/articles/:user_id")
     userArticles(req: Request) {
         let user_id: number = parseInt(req.params["article_id"]);
-
         let articles = this.articleModel.findUserArticles(user_id);
         return articles;
     }
