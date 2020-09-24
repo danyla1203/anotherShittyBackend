@@ -69,7 +69,7 @@ export class Bootstrap {
         expressApp.use(express.urlencoded({ extended: true }));
         expressApp.use(uploads.array());
 
-        expressApp.all("*", (req: Request, res: Response) => {
+        expressApp.all("*", async (req: Request, res: Response) => {
             let url = req.url;
             let method = req.method;
             let handler: handler | undefined = this.getHandler(url, method, handlers);
@@ -81,7 +81,7 @@ export class Bootstrap {
             this.setParamsFromUri(url, handler.path, req);
 
             try {
-                let result: any = handler.handlerFunc(req);
+                let result: any = await handler.handlerFunc(req);
                 res.json(result);
             } catch (e) {
                 res.json(e.errorData);
