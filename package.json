@@ -4,7 +4,7 @@
   "dependencies": {
     "express": "latest",
     "multer": "^1.4.2",
-    "redis": "^3.0.2",
+    "promise-redis": "latest",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
