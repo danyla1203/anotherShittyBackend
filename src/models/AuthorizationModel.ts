@@ -16,8 +16,8 @@ export class AuthorizationModel {
         return this.authRepository.createSession(ip, userAgent);
     }
 
-    verifyUserLogin(userName: string, password: string) {
-        let user = this.authRepository.findUserFromDb(userName);
+    async verifyUserLogin(userName: string, password: string) {
+        let user = await this.authRepository.findUserFromDb(userName);
         if (user) {
             if (user.password == password) {
                 return true;
