@@ -1,21 +1,28 @@
 import {RedisClient} from "redis";
+import {Client} from "pg";
 import * as crypto from "crypto";
 
-import {redisClient} from "../index";
+import {dbConnection, redisClient} from "../index";
 import {AuthorizationRepositoryI} from "../models/AuthorizationModel";
 
 export class AuthorizationRepository implements AuthorizationRepositoryI {
-    connection: RedisClient = redisClient;
+    redis: RedisClient = redisClient;
+    database: Client = dbConnection;
 
     createSession(ip: string, userAgent: string) {
         let session_id = crypto.createHash("sha256")
                                 .update(ip + userAgent)
                                 .digest("hex");
-        this.connection.hset(session_id, "{}");
+        this.redis.hset(session_id, "{}");
     }
 
-    findUser(userName: string) {
-
+    async findUser(userName: string) {
+        let user = this.database.query(`select * from users where name=${userName}`);
+        if (user) {
+            return user;
+        } else {
+            return null;
+        }
     }
 
 }
