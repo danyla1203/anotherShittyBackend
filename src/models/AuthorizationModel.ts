@@ -1,7 +1,8 @@
 import {BadPassword, NoSuchUser} from "../lib/Error";
 
 export interface AuthorizationRepositoryI {
-    findUser(name: string): any
+    findUserFromDb(name: string): any
+
 }
 
 export class AuthorizationModel {
@@ -12,10 +13,10 @@ export class AuthorizationModel {
     }
 
     verifyUserLogin(userName: string, password: string) {
-        let user = this.authRepository.findUser(userName);
+        let user = this.authRepository.findUserFromDb(userName);
         if (user) {
             if (user.password == password) {
-                //create session
+                return true;
             } else {
                 throw new BadPassword()
             }
