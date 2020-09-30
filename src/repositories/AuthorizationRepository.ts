@@ -9,15 +9,16 @@ export class AuthorizationRepository implements AuthorizationRepositoryI {
     redis: RedisClient = redisClient;
     database: Client = dbConnection;
 
-    createSession(ip: string, userAgent: string) {
+    createSession(ip: string, userAgent: string): string {
         let session_id = crypto.createHash("sha256")
                                 .update(ip + userAgent)
                                 .digest("hex");
         this.redis.hset(session_id, "{}");
+        return session_id;
     }
 
-    async findUser(userName: string) {
-        let user = this.database.query(`select * from users where name=${userName}`);
+    async findUserFromDb(userName: string) {
+        let user = await this.database.query(`select * from users where name=${userName}`);
         if (user) {
             return user;
         } else {
