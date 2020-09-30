@@ -2,7 +2,7 @@ import {BadPassword, NoSuchUser} from "../lib/Error";
 
 export interface AuthorizationRepositoryI {
     findUserFromDb(name: string): any
-
+    createSession(ip: string, userAgent: string): string
 }
 
 export class AuthorizationModel {
@@ -10,6 +10,10 @@ export class AuthorizationModel {
 
     constructor(repo: AuthorizationRepositoryI) {
         this.authRepository = repo;
+    }
+
+    createSession(ip: string, userAgent: string): string {
+        return this.authRepository.createSession(ip, userAgent);
     }
 
     verifyUserLogin(userName: string, password: string) {
@@ -20,7 +24,6 @@ export class AuthorizationModel {
             } else {
                 throw new BadPassword()
             }
-
         } else {
             throw new NoSuchUser();
         }
