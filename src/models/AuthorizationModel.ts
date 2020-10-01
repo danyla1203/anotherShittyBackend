@@ -1,5 +1,7 @@
-import {BadPassword, NoSuchUser} from "../lib/Error";
 import * as crypto from "crypto";
+import * as jwt from "jsonwebtoken";
+
+import {BadPassword, NoSuchUser} from "../lib/Error";
 
 export interface AuthorizationRepositoryI {
     findUserFromDb(name: string): any
@@ -22,7 +24,7 @@ export class AuthorizationModel {
     }
 
     createAccesToken(userName: string): string {
-        return ""
+        return jwt.sign({ userName: userName }, "test_key");
     }
     createRefreshToken(): string {
         return ""
