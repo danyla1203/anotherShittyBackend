@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "latest",
+    "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.2",
     "pg": "^8.3.3",
     "promise-redis": "latest",
@@ -11,6 +12,8 @@
   "devDependencies": {
     "@types/express": "latest",
     "@types/jest": "^26.0.14",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/multer": "^1.4.4",
     "@types/pg": "^7.14.5",
     "@types/redis": "^2.8.27",
     "jest": "^26.4.2",
