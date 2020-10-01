@@ -6,7 +6,7 @@ import {Application, Request, Response} from "express";
 type handler = {
     method: string,
     path: string,
-    handlerFunc: (req: Request) => any
+    handlerFunc: (req?: Request, res?: Response) => any
 }
 
 export class Bootstrap {
@@ -81,7 +81,7 @@ export class Bootstrap {
             this.setParamsFromUri(url, handler.path, req);
 
             try {
-                let result: any = await handler.handlerFunc(req);
+                let result: any = await handler.handlerFunc(req, res);
                 res.json(result);
             } catch (e) {
                 res.json(e.errorData);
