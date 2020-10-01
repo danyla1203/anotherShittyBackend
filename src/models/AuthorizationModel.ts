@@ -24,7 +24,7 @@ export class AuthorizationModel {
     }
 
     createAccesToken(userName: string): string {
-        return jwt.sign({ userName: userName }, "test_key");
+        return jwt.sign({ userName: userName }, process.env.JWT_KEY || "test_key");
     }
     createRefreshToken(): string {
         return ""

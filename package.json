@@ -2,6 +2,7 @@
   "name": "anotherBitch",
   "version": "0.0.1",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "latest",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.2",
