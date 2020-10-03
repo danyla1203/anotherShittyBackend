@@ -26,4 +26,10 @@ export class AuthorizationController {
         res.cookie("refresh_token", refreshToken, {  maxAge: 9000000, httpOnly: true });
         return { accessToken: accessToken };
     }
+
+    @post("/logout")
+    async logout(req: Request) {
+        this.authModel.checkAssesToken(req.headers.authorization || "");
+        this.authModel.destroySession(req.cookies["s_id"] || "");
+    }
 }
