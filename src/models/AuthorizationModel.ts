@@ -1,7 +1,7 @@
 import * as crypto from "crypto";
 import * as jwt from "jsonwebtoken";
 
-import {BadPassword, NoSuchUser} from "../lib/Error";
+import {BadPassword, InvalidData, NoSuchUser} from "../lib/Error";
 
 export interface AuthorizationRepositoryI {
     findUserFromDb(name: string): any
@@ -20,14 +20,14 @@ export class AuthorizationModel {
         let session_id = crypto.createHash("sha256")
             .update(ip + userAgent)
             .digest("hex");
-        return session_id
+        return session_id;
     }
 
     createAccesToken(userName: string): string {
         return jwt.sign({ userName: userName }, process.env.JWT_KEY || "test_key");
     }
     createRefreshToken(): string {
-        return ""
+        return "";
     }
 
     getTokens(session_id: string, userName: string): string[] {
@@ -44,12 +44,16 @@ export class AuthorizationModel {
     }
 
     async verifyUserLogin(userName: string, password: string) {
+        if (!userName || !password) {
+            throw new InvalidData("Incorrect user data");
+        }
         let user = await this.authRepository.findUserFromDb(userName);
+
         if (user) {
             if (user.password == password) {
                 return true;
             } else {
-                throw new BadPassword()
+                throw new BadPassword();
             }
         } else {
             throw new NoSuchUser();
