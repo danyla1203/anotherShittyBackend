@@ -7,6 +7,7 @@ export interface AuthorizationRepositoryI {
     findUserFromDb(name: string): any
     createSession(session_id: string): void
     setTokens(session_id: string, access: string, refresh: string): void;
+    deleteSession(session_id: string): void;
 }
 
 export class AuthorizationModel {
@@ -66,5 +67,9 @@ export class AuthorizationModel {
         } catch (e) {
             throw new BadAccessToken("Access token is broken");
         }
+    }
+
+    destroySession(session_id: string) {
+        this.authRepository.deleteSession(session_id);
     }
 }

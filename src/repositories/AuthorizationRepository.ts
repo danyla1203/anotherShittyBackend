@@ -28,4 +28,8 @@ export class AuthorizationRepository implements AuthorizationRepositoryI {
         this.redis.hmset(session_id, tokensPair);
     }
 
+    deleteSession(session_id: string) {
+        this.redis.del(session_id);
+    }
+
 }
