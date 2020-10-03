@@ -7,6 +7,7 @@ import {Bootstrap} from "./bootstrap";
 import {ArticleController} from "./controllers/ArticleController";
 import {AuthorizationRepository} from "./repositories/AuthorizationRepository";
 import {RedisError} from "redis";
+import {AuthorizationController} from "./controllers/AuthorizationController";
 
 const app = express();
 dotenv.config();
@@ -32,7 +33,8 @@ dbConnection.connect((err) => {
 
 //put new controllers here
 const controllers = [
-    new ArticleController()
+    new ArticleController(),
+    new AuthorizationController()
 ];
 const bootstrap = new Bootstrap(controllers);
 
