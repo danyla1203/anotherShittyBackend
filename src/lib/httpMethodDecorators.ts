@@ -3,7 +3,7 @@ import "reflect-metadata";
 export function get(path: string) {
     return function(
         target: any,
-        methodName,
+        methodName: string,
         funcDescriptor: any
     ) {
         let handler = {
