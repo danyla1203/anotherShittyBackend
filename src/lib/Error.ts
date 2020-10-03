@@ -45,3 +45,11 @@ export class InvalidData extends CustomError {
         })
     }
 }
+export class BadAccessToken extends CustomError {
+    constructor(text: string) {
+        super({
+            statusCode: 400,
+            statusText: text
+        })
+    }
+}
