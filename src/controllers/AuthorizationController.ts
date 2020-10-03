@@ -18,7 +18,7 @@ export class AuthorizationController {
         let userName = req.body["name"];
         let password = req.body["password"];
 
-        this.authModel.verifyUserLogin(userName, password);
+        await this.authModel.verifyUserLogin(userName, password);
         let session_id = this.authModel.createSession(req.ip, req.headers["user-agent"]);
         let [ accessToken, refreshToken ] = this.authModel.getTokens(session_id, userName);
 
