@@ -61,7 +61,7 @@ export class AuthorizationModel {
         }
     }
 
-    checkAssesToken(token: string) {
+    checkAccessToken(token: string) {
         try {
             jwt.verify(token, process.env.JWT_KEY || "test_key");
         } catch (e) {

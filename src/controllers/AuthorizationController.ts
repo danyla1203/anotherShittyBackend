@@ -29,7 +29,7 @@ export class AuthorizationController {
 
     @post("/logout")
     async logout(req: Request) {
-        this.authModel.checkAssesToken(req.headers.authorization || "");
+        this.authModel.checkAccessToken(req.headers.authorization || "");
         this.authModel.destroySession(req.cookies["s_id"] || "");
     }
 }
