@@ -37,3 +37,11 @@ export class BadPassword extends CustomError {
         })
     }
 }
+export class InvalidData extends CustomError {
+    constructor(text: string) {
+        super({
+            statusCode: 400,
+            statusText: text
+        })
+    }
+}
