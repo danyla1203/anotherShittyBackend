@@ -21,7 +21,11 @@ export class AuthorizationRepository implements AuthorizationRepositoryI {
         }
     }
     setTokens(session_id: string, access: string, refresh: string) {
-
+        let tokensPair =  {
+            "accessToken": access,
+            "refreshToken": refresh
+        };
+        this.redis.hmset(session_id, tokensPair);
     }
 
 }
