@@ -1,7 +1,7 @@
 import * as crypto from "crypto";
 import * as jwt from "jsonwebtoken";
 
-import {BadPassword, InvalidData, NoSuchUser} from "../lib/Error";
+import {BadAccessToken, BadPassword, InvalidData, NoSuchUser} from "../lib/Error";
 
 export interface AuthorizationRepositoryI {
     findUserFromDb(name: string): any
@@ -57,6 +57,14 @@ export class AuthorizationModel {
             }
         } else {
             throw new NoSuchUser();
+        }
+    }
+
+    checkAssesToken(token: string) {
+        try {
+            jwt.verify(token, process.env.JWT_KEY || "test_key");
+        } catch (e) {
+            throw new BadAccessToken("Access token is broken");
         }
     }
 }
