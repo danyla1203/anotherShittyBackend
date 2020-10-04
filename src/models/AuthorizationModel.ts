@@ -60,7 +60,10 @@ export class AuthorizationModel {
         }
     }
 
-    checkAccessToken(token: string) {
+    checkAccessToken(token: string | undefined) {
+        if (!token) {
+            throw new BadAccessToken("Access token is missing");
+        }
         try {
             jwt.verify(token, process.env.JWT_KEY || "test_key");
         } catch (e) {
