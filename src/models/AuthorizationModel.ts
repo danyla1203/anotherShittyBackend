@@ -2,6 +2,7 @@ import * as crypto from "crypto";
 import * as jwt from "jsonwebtoken";
 
 import {BadAccessToken, BadPassword, InvalidData, NoSuchUser} from "../lib/Error";
+import {User} from "../repositories/AuthorizationRepository";
 
 export interface AuthorizationRepositoryI {
     findUserFromDb(name: string): any
@@ -48,7 +49,7 @@ export class AuthorizationModel {
         if (!userName || !password) {
             throw new InvalidData("Incorrect user data");
         }
-        let user = await this.authRepository.findUserFromDb(userName);
+        let user: User | null = await this.authRepository.findUserFromDb(userName);
 
         if (user) {
             if (user.password != password) {
