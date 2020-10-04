@@ -5,8 +5,8 @@ import {BadAccessToken, BadPassword, InvalidData, NoSuchUser} from "../lib/Error
 import {User} from "../repositories/AuthorizationRepository";
 
 export interface AuthorizationRepositoryI {
-    findUserFromDb(name: string): any
-    createSession(session_id: string): void
+    findUserFromDb(name: string): Promise<User | null>;
+    createSession(session_id: string): void;
     setTokens(session_id: string, access: string, refresh: string): void;
     deleteSession(session_id: string): void;
 }
