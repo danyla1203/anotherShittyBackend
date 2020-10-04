@@ -8,6 +8,9 @@ import {ArticleController} from "./controllers/ArticleController";
 import {AuthorizationRepository} from "./repositories/AuthorizationRepository";
 import {RedisError} from "redis";
 import {AuthorizationController} from "./controllers/AuthorizationController";
+import {AuthorizationModel} from "./models/AuthorizationModel";
+import {ArticleModel} from "./models/ArticleModel";
+import {ArticleRepository} from "./repositories/ArticleRepository";
 
 const app = express();
 dotenv.config();
@@ -30,17 +33,21 @@ dbConnection.connect((err) => {
         console.log('connected')
     }
 });
+//creating repositories
+const authRepo = new AuthorizationRepository(redisClient, dbConnection);
+const articleRepo = new ArticleRepository();
+
+//creating models
+const authModel = new AuthorizationModel(authRepo);
+const articleModel = new ArticleModel(articleRepo);
 
 //put new controllers here
 const controllers = [
-    new ArticleController(),
-    new AuthorizationController()
+    new ArticleController(articleModel),
+    new AuthorizationController(authModel)
 ];
 const bootstrap = new Bootstrap(controllers);
 
 bootstrap.start(app);
 
 app.listen(3000);
-
-
-const test = new AuthorizationRepository();
