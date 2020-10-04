@@ -1,12 +1,11 @@
 import {RedisClient} from "redis";
 import {Client} from "pg";
 
-import {dbConnection, redisClient} from "../index";
 import {AuthorizationRepositoryI} from "../models/AuthorizationModel";
 
 export class AuthorizationRepository implements AuthorizationRepositoryI {
-    redis: RedisClient = redisClient;
-    database: Client = dbConnection;
+    redis: RedisClient;
+    database: Client;
 
     constructor(redis: RedisClient, db: Client) {
         this.redis = redis;
