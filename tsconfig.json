@@ -5,7 +5,8 @@
     "sourceMap": true,
     "outDir": "./dist",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "strict": true
   },
   "exclude": [
     "node_modules"
