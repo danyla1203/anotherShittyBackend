@@ -51,9 +51,7 @@ export class AuthorizationModel {
         let user = await this.authRepository.findUserFromDb(userName);
 
         if (user) {
-            if (user.password == password) {
-                return true;
-            } else {
+            if (user.password != password) {
                 throw new BadPassword();
             }
         } else {
