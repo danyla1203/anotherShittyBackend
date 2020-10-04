@@ -8,6 +8,11 @@ export class AuthorizationRepository implements AuthorizationRepositoryI {
     redis: RedisClient = redisClient;
     database: Client = dbConnection;
 
+    constructor(redis: RedisClient, db: Client) {
+        this.redis = redis;
+        this.database = db;
+    }
+
     createSession(session_id: string) {
         this.redis.hset(session_id, "{}");
     }
