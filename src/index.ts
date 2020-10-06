@@ -43,7 +43,7 @@ const articleModel = new ArticleModel(articleRepo);
 
 //put new controllers here
 const controllers = [
-    new ArticleController(articleModel),
+    new ArticleController(articleModel, authModel),
     new AuthorizationController(authModel)
 ];
 const bootstrap = new Bootstrap(controllers);

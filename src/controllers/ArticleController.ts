@@ -1,13 +1,16 @@
-import {Request} from "express";
+import {Request, Response} from "express";
 
 import {ArticleModel} from "../models/ArticleModel";
-import {get} from "../lib/httpMethodDecorators";
+import {get, post} from "../lib/httpMethodDecorators";
+import {AuthorizationModel} from "../models/AuthorizationModel";
 
 export class ArticleController {
     articleModel: ArticleModel;
+    authModel: AuthorizationModel;
 
-    constructor(articleModel: ArticleModel) {
+    constructor(articleModel: ArticleModel, authModel: AuthorizationModel) {
         this.articleModel = articleModel;
+        this.authModel = authModel;
     }
 
     @get("/article/:article_id")
@@ -23,5 +26,8 @@ export class ArticleController {
         let articles = this.articleModel.findUserArticles(user_id);
         return articles;
     }
+    @post("/add-article")
+    async addArticle(req: Request, res: Response) {
 
+    }
 }
