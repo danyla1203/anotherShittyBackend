@@ -25,15 +25,19 @@ export class AuthorizationModel {
         return session_id;
     }
 
-    createAccesToken(userName: string): string {
-        return jwt.sign({ userName: userName }, process.env.JWT_KEY || "test_key");
+    createAccessToken(user_id: number, userName: string): string {
+        let payload = {
+            user_id: user_id,
+            userName: userName
+        };
+        return jwt.sign(payload, process.env.JWT_KEY || "test_key");
     }
     createRefreshToken(): string {
         return "";
     }
 
-    getTokens(session_id: string, userName: string): string[] {
-        let accessToken = this.createAccesToken(userName);
+    getTokens(session_id: string, user_id: number, userName: string): string[] {
+        let accessToken = this.createAccessToken(user_id, userName);
         let refreshToken = this.createRefreshToken();
         this.authRepository.setTokens(session_id, accessToken, refreshToken);
         return [ accessToken, refreshToken ];
