@@ -23,11 +23,16 @@ export class AuthorizationRepository implements AuthorizationRepositoryI {
     }
 
     async findUserFromDb(userName: string): Promise<User | null> {
-        let result: QueryResult = await this.database.query(`select * from users where name=${userName}`);
-        let user: User = result.rows[0];
-        if (user) {
-            return user;
-        } else {
+        try {
+            let result: QueryResult = await this.database.query(`select * from users where user_name='${userName}'`);
+            let user: User = result.rows[0];
+            if (user) {
+                return user;
+            } else {
+                return null;
+            }
+        } catch (e) {
+            console.log(e.error);
             return null;
         }
     }
