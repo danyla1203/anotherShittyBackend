@@ -16,9 +16,9 @@ export class ArticleRepository implements ArticleRepositoryI {
             let result = await this.db.query(`select * from articles where article_id='${article_id}'`);
             let article: Article = result.rows[0];
             if (article) {
-                return article
+                return article;
             } else {
-                return null
+                return null;
             }
         } catch (e) {
             console.log(e.error);
