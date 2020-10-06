@@ -49,7 +49,7 @@ export class AuthorizationModel {
         return sessionId;
     }
 
-    async verifyUserLogin(userName: string, password: string) {
+    async verifyUserLogin(userName: string, password: string): Promise<User> {
         if (!userName || !password) {
             throw new InvalidData("Incorrect user data");
         }
@@ -58,6 +58,8 @@ export class AuthorizationModel {
         if (user) {
             if (user.password != password) {
                 throw new BadPassword();
+            } else {
+                return user;
             }
         } else {
             throw new NoSuchUser();
