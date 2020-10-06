@@ -3,6 +3,7 @@ import {Client} from "pg";
 
 type Article = {
     article_id: number;
+    author_id: number
 }
 
 export class ArticleRepository implements ArticleRepositoryI {
@@ -26,7 +27,19 @@ export class ArticleRepository implements ArticleRepositoryI {
         }
     }
 
-    findUserArticles(user_id: number) {
-        return null;
+    async findUserArticles(user_id: number) {
+        try {
+            let result = await this.db.query(`select * from articles where author_id='${user_id}'`);
+            let articles: Article[] = result.rows[0];
+            if (articles.length > 0) {
+                return articles;
+            } else {
+                return null;
+            }
+        }
+        catch (e) {
+            console.log(e.error);
+            return null;
+        }
     }
 }
