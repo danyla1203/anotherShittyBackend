@@ -27,7 +27,7 @@ export class ArticleController {
         return articles;
     }
     @post("/add-article")
-    async addArticle(req: Request, res: Response) {
+    async addArticle(req: Request) {
         let user: UserJwt = this.authModel.checkAccessToken(req.headers.authorization);
         let articleData = {
             author_id: user.user_id,
