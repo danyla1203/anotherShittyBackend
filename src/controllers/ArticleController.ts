@@ -22,7 +22,7 @@ export class ArticleController {
 
     @get("/articles/:user_id")
     async userArticles(req: Request) {
-        let user_id: number = parseInt(req.params["article_id"]);
+        let user_id: number = parseInt(req.params["user_id"]);
         let articles = this.articleModel.findUserArticles(user_id);
         return articles;
     }
