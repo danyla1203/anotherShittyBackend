@@ -52,4 +52,7 @@ export class ArticleRepository implements ArticleRepositoryI {
             throw new DatabaseError();
         }
     }
+    deleteArticle(article_id: number) {
+        this.db.query(`delete * from articles where article_id='${article_id}'`);
+    }
 }
