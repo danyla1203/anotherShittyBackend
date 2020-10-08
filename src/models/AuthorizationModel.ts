@@ -11,6 +11,11 @@ export interface AuthorizationRepositoryI {
     deleteSession(session_id: string): void;
 }
 
+type UserJwt = {
+    user_id: number,
+    name: string
+}
+
 export class AuthorizationModel {
     authRepository: AuthorizationRepositoryI;
 
@@ -25,10 +30,10 @@ export class AuthorizationModel {
         return session_id;
     }
 
-    createAccessToken(user_id: number, userName: string): string {
-        let payload = {
+    createAccessToken(user_id: number, userName: string) {
+        let payload: UserJwt = {
             user_id: user_id,
-            userName: userName
+            name: userName
         };
         return jwt.sign(payload, process.env.JWT_KEY || "test_key");
     }
@@ -66,12 +71,12 @@ export class AuthorizationModel {
         }
     }
 
-    checkAccessToken(token: string | undefined) {
+    checkAccessToken(token: string | undefined): UserJwt {
         if (!token) {
             throw new BadAccessToken("Access token is missing");
         }
         try {
-            jwt.verify(token, process.env.JWT_KEY || "test_key");
+            return jwt.verify<UserJwt>(token, process.env.JWT_KEY || "test_key");
         } catch (e) {
             throw new BadAccessToken("Access token is broken");
         }
