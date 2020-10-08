@@ -23,8 +23,7 @@ export class ArticleRepository implements ArticleRepositoryI {
                 return null;
             }
         } catch (e) {
-            console.log(e.error);
-            return null;
+            throw new DatabaseError()
         }
     }
 
@@ -39,8 +38,7 @@ export class ArticleRepository implements ArticleRepositoryI {
             }
         }
         catch (e) {
-            console.log(e.error);
-            return null;
+            throw new DatabaseError();
         }
     }
     async appendArticle(articleData: IncomingArticleData) {
