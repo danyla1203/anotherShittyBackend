@@ -5,13 +5,20 @@ export interface ArticleRepositoryI {
     findUserArticles(user_id: number): any;
     appendArticle(articleData: IncomingArticleData): void;
     deleteArticle(article_id: number): void;
+    updateArticle(article_id: number, title?: string, text?: string): void;
 }
-
 
 export type IncomingArticleData = {
     author_id: number;
     title?: string;
-    text?: string
+    text?: string;
+}
+
+export type UpdateArticleData = {
+    author_id: number;
+    article_id: number;
+    title?: string;
+    text?: string;
 }
 
 export class ArticleModel {
@@ -52,6 +59,20 @@ export class ArticleModel {
         if (article) {
             if (article.author_id == user_id) {
                 this.repository.deleteArticle(article_id);
+            } else {
+                throw new InvalidData("User haven't such article");
+            }
+        } else {
+            throw new NotFoundErr("Article not found");
+        }
+    }
+    async updateArticle(articleData: UpdateArticleData) {
+        let { article_id, author_id, title, text } = articleData;
+        let article = await this.repository.findArticle(article_id);
+
+        if (article) {
+            if (article.author_id == author_id) {
+                this.repository.updateArticle(article_id, title, text);
             } else {
                 throw new InvalidData("User haven't such article");
             }

@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 
 import {ArticleModel} from "../models/ArticleModel";
-import {Delete, get, post} from "../lib/httpMethodDecorators";
+import {Delete, get, post, put} from "../lib/httpMethodDecorators";
 import {AuthorizationModel, UserJwt} from "../models/AuthorizationModel";
 
 export class ArticleController {
@@ -41,7 +41,18 @@ export class ArticleController {
     deleteArticle(req: Request) {
         let user: UserJwt = this.authModel.checkAccessToken(req.headers.authorization);
         let article_id = parseInt(req.params["article_id"]);
-        this.articleModel.deleteArticle(user.user_id, article_id)
+        this.articleModel.deleteArticle(user.user_id, article_id);
+    }
+    @put("/article/:article_id")
+    updateArticle(req: Request) {
+        let user: UserJwt = this.authModel.checkAccessToken(req.headers.authorization);
+        let articleData = {
+            article_id: parseInt(req.params["article_id"]),
+            author_id: user.user_id,
+            title: req.body["title"],
+            text: req.body["text"]
+        };
+        this.articleModel.updateArticle(articleData);
     }
 
 }

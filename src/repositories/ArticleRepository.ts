@@ -61,4 +61,14 @@ export class ArticleRepository implements ArticleRepositoryI {
             throw new DatabaseError();
         }
     }
+    updateArticle(article_id: number, title: string, text: string) {
+        try {
+            this.db.query(
+                "update articles set title=$1, text=$2 where article_id=$3",
+                [title, text, article_id]
+            );
+        } catch (e) {
+            throw new DatabaseError();
+        }
+    }
 }
