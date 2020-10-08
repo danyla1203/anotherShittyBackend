@@ -1,5 +1,6 @@
-import {ArticleRepositoryI} from "../models/ArticleModel";
+import {ArticleRepositoryI, IncomingArticleData} from "../models/ArticleModel";
 import {Client} from "pg";
+import {DatabaseError} from "../lib/Error";
 
 type Article = {
     article_id: number;
@@ -40,6 +41,17 @@ export class ArticleRepository implements ArticleRepositoryI {
         catch (e) {
             console.log(e.error);
             return null;
+        }
+    }
+    async appendArticle(articleData: IncomingArticleData) {
+        let { title, text, author_id } = articleData;
+        try {
+            let result = await this.db.query(
+                "insert into articles (title, text, author_id) values($1, $2, $3)",
+                [title, text, author_id]
+            );
+        } catch (e) {
+            throw new DatabaseError();
         }
     }
 }

@@ -53,3 +53,11 @@ export class BadAccessToken extends CustomError {
         })
     }
 }
+export class DatabaseError extends CustomError {
+    constructor() {
+        super({
+            statusCode: 500,
+            statusText: "Server Error"
+        })
+    }
+}
