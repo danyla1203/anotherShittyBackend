@@ -57,6 +57,7 @@ export class ArticleRepository implements ArticleRepositoryI {
                 "insert into articles (title, text, author_id) values($1, $2, $3)",
                 [title, text, author_id]
             );
+            this.redis.hmset(result.rows[0].article_id, result.rows[0]);
         } catch (e) {
             throw new DatabaseError();
         }
@@ -66,6 +67,7 @@ export class ArticleRepository implements ArticleRepositoryI {
             this.db.query(
                 `delete * from articles where article_id='${article_id}'`
             );
+            this.redis.del(article_id + "");
         } catch (e) {
             throw new DatabaseError();
         }
