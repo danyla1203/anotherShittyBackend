@@ -1,6 +1,7 @@
 import {ArticleRepositoryI, IncomingArticleData} from "../models/ArticleModel";
 import {Client} from "pg";
 import {DatabaseError} from "../lib/Error";
+import {RedisClient} from "redis";
 
 type Article = {
     article_id: number;
@@ -9,15 +10,23 @@ type Article = {
 
 export class ArticleRepository implements ArticleRepositoryI {
     db: Client;
-    constructor(db: Client) {
+    redis: RedisClient;
+    constructor(db: Client, redis: RedisClient) {
         this.db = db;
+        this.redis = redis;
     }
 
     async findArticle(article_id: number): Promise<Article | null> {
         try {
-            let result = await this.db.query(`select * from articles where article_id='${article_id}'`);
-            let article: Article = result.rows[0];
+            let articleFromCache = await this.redis.hgetall(article_id + "");
+            if (articleFromCache) {
+                return articleFromCache;
+            }
+
+            let resultFromDb = await this.db.query(`select * from articles where article_id='${article_id}'`);
+            let article: Article = resultFromDb.rows[0];
             if (article) {
+                this.redis.hmset(article_id + "", article);
                 return article;
             } else {
                 return null;
