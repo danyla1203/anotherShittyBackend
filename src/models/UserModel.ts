@@ -17,7 +17,7 @@ export class UserModel {
         return this.repo.getUser(user_id);
     }
     async deleteUser(user_id: number) {
-        this.deleteUser(user_id);
+        this.repo.deleteUser(user_id);
     }
 
 }
