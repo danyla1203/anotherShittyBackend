@@ -14,6 +14,8 @@ import {ArticleRepository} from "./repositories/ArticleRepository";
 import {UsersRepository} from "./repositories/UsersRepository";
 import {UsersModel} from "./models/UsersModel";
 import {UsersController} from "./controllers/UsersController";
+import {UserModel} from "./models/UserModel";
+import {UserController} from "./controllers/UserController";
 
 const app = express();
 dotenv.config();
@@ -40,17 +42,20 @@ dbConnection.connect((err) => {
 const authRepo = new AuthorizationRepository(redisClient, dbConnection);
 const articleRepo = new ArticleRepository(dbConnection, redisClient);
 const usersRepo = new UsersRepository(dbConnection);
+const userRepo = new UsersRepository(dbConnection);
 
 //creating models
 const authModel = new AuthorizationModel(authRepo);
 const articleModel = new ArticleModel(articleRepo);
 const usersModel = new UsersModel(usersRepo);
+const userModel = new UserModel(userRepo);
 
 //put new controllers here
 const controllers = [
     new ArticleController(articleModel, authModel),
     new AuthorizationController(authModel),
-    new UsersController(usersModel)
+    new UsersController(usersModel),
+    new UserController(userModel, authModel)
 ];
 const bootstrap = new Bootstrap(controllers);
 
