@@ -14,7 +14,9 @@ export class UserController {
 
     @get("/user")
     getUser(req: Request) {
-
+        let token = req.headers.authorization;
+        let user_id = this.authModel.checkAccessToken(token).user_id;
+        return this.model.getPrivateUserData(user_id);
     }
 
     @put("/user")
