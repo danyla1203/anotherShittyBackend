@@ -1,5 +1,7 @@
+import {NotFoundErr} from "../lib/Error";
+
 export interface UsersRepoI {
-    getUserData(user_id: number): Promise<UserPublicData>;
+    getUserData(user_id: number): Promise<UserPublicData | null>;
     getUsersList(): Promise<UserPublicData[]>
 }
 
@@ -14,7 +16,12 @@ export class UsersModel {
     }
 
     async getUserData(user_id: number): Promise<UserPublicData> {
-        return this.repo.getUserData(user_id);
+        let userData = await this.repo.getUserData(user_id);
+        if (userData) {
+            return userData;
+        } else {
+            throw new NotFoundErr("User not found");
+        }
     }
     async getUsersList() {
         return this.repo.getUsersList();

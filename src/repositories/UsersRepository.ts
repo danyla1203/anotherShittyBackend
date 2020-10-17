@@ -7,7 +7,7 @@ export class UsersRepository implements UsersRepoI{
         this.db = connection;
     }
 
-    async getUserData(user_id: number): Promise<UserPublicData> {
+    async getUserData(user_id: number): Promise<UserPublicData | null> {
         return {
             name: "John"
         }
