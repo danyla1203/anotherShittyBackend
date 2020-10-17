@@ -25,10 +25,11 @@ export class UserController {
     }
 
     @Delete("/user")
-    deleteUser(req: Request) {
+    async deleteUser(req: Request) {
         let token = req.headers.authorization;
         let user_id = this.authModel.checkAccessToken(token).user_id;
-        this.model.deleteUser(user_id);
+        await this.model.deleteUser(user_id);
+        return { ok: true };
     }
 
 }
