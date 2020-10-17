@@ -1,5 +1,6 @@
 export interface UserRepoI {
-    getUser(user_id: number): Promise<UserPrivateData>
+    getUser(user_id: number): Promise<UserPrivateData>;
+    deleteUser(user_id: number): void;
 }
 
 export type UserPrivateData = {
@@ -14,6 +15,9 @@ export class UserModel {
 
     async getPrivateUserData(user_id: number) {
         return this.repo.getUser(user_id);
+    }
+    async deleteUser(user_id: number) {
+        this.deleteUser(user_id);
     }
 
 }

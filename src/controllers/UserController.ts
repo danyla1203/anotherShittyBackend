@@ -20,13 +20,15 @@ export class UserController {
     }
 
     @put("/user")
-    updateUserData() {
+    updateUserData(req: Request) {
 
     }
 
     @Delete("/user")
-    deleteUser() {
-
+    deleteUser(req: Request) {
+        let token = req.headers.authorization;
+        let user_id = this.authModel.checkAccessToken(token).user_id;
+        this.model.deleteUser(user_id);
     }
 
 }

@@ -17,4 +17,11 @@ export class UserRepository implements UserRepoI {
             throw  new DatabaseError();
         }
     }
+    deleteUser(user_id: number) {
+        try {
+            this.db.query(`delete from users where user_id = '${user_id}'`);
+        } catch (e) {
+            throw new DatabaseError();
+        }
+    }
 }
