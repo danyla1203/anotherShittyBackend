@@ -15,4 +15,9 @@ export class UsersController {
         return userData;
     }
 
-}
+    @get("/users/list")
+    async getUsersList() {
+        return this.model.getUsersList();
+    }
+
+}   

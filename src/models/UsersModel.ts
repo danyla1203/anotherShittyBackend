@@ -1,8 +1,9 @@
 export interface UsersRepoI {
     getUserData(user_id: number): Promise<UserPublicData>;
+    getUsersList(): Promise<UserPublicData[]>
 }
 
-type UserPublicData = {
+export type UserPublicData = {
     name: string
 }
 
@@ -14,5 +15,8 @@ export class UsersModel {
 
     async getUserData(user_id: number): Promise<UserPublicData> {
         return this.repo.getUserData(user_id);
+    }
+    async getUsersList() {
+        return this.repo.getUsersList();
     }
 }

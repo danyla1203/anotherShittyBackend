@@ -1,5 +1,5 @@
 import {Client} from "pg";
-import {UsersRepoI} from "../models/UsersModel";
+import {UserPublicData, UsersRepoI} from "../models/UsersModel";
 
 export class UsersRepository implements UsersRepoI{
     db: Client;
@@ -7,9 +7,12 @@ export class UsersRepository implements UsersRepoI{
         this.db = connection;
     }
 
-    async getUserData(user_id: number) {
+    async getUserData(user_id: number): Promise<UserPublicData> {
         return {
             name: "John"
         }
+    }
+    async getUsersList(): Promise<UserPublicData[]> {
+        return [];
     }
 }
