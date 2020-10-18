@@ -9,6 +9,7 @@ export interface AuthorizationRepositoryI {
     createSession(session_id: string): void;
     setTokens(session_id: string, access: string, refresh: string): void;
     deleteSession(session_id: string): void;
+    insertUser(name: string, password: string, country: string): Promise<number>
 }
 
 export type UserJwt = {
@@ -52,6 +53,22 @@ export class AuthorizationModel {
         let sessionId = this.createSeesionId(ip, userAgent);
         this.authRepository.createSession(sessionId);
         return sessionId;
+    }
+
+    checkData(name: string, password: string, country: string) {
+
+    }
+
+    async isUserExist(name: string) {
+        let user = await this.authRepository.findUserFromDb(name);
+        if (user) {
+            throw new InvalidData("User with the same name already exist");
+        }
+    }
+
+    async createUser(name: string, password: string, country: string): number {
+        let user_id = await this.authRepository.insertUser(name, password, country);
+        return user_id;
     }
 
     async verifyUserLogin(userName: string, password: string): Promise<User> {

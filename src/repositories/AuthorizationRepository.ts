@@ -2,6 +2,7 @@ import {RedisClient} from "redis";
 import {Client, QueryResult} from "pg";
 
 import {AuthorizationRepositoryI} from "../models/AuthorizationModel";
+import {DatabaseError} from "../lib/Error";
 
 export type User = {
     user_id: number;
@@ -42,6 +43,18 @@ export class AuthorizationRepository implements AuthorizationRepositoryI {
             "refreshToken": refresh
         };
         this.redis.hmset(session_id, tokensPair);
+    }
+
+    async insertUser(name: string, password: string, country: string) {
+        try {
+            let result = await this.database.query(
+                "insert into users(name, password, country) values($1, $2, $3)",
+                [name, password, country]
+            );
+            return result.rows[0];
+        } catch (e) {
+            throw new DatabaseError();
+        }
     }
 
     deleteSession(session_id: string) {

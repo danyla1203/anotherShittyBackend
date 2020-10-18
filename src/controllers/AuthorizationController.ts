@@ -30,4 +30,26 @@ export class AuthorizationController {
         this.authModel.destroySession(req.cookies["s_id"] || "");
         return { ok: true }
     }
+
+    @post("/signup")
+    async signup(req: Request, res: Response) {
+        let name = req.body["name"];
+        let password = req.body["password"];
+        let country = req.body["country"];
+
+        //check data and create new user in db
+        await this.authModel.checkData(name, password, country);
+        await this.authModel.isUserExist(name);
+        let user_id: number = await this.authModel.createUser(name, password, country);
+
+        //get tokens and session_id
+        let session_id: string = this.authModel.createSession(req.ip, req.headers["user-agent"] || "");
+        const [ access, refresh ] = this.authModel.getTokens(session_id, user_id,  name);
+
+        //send tokens and sess id
+        res.cookie("s_id", session_id,  { httpOnly: true });
+        res.cookie("refresh_token", refresh, {  maxAge: 9000000, httpOnly: true });
+        return { accessToken: access };
+
+    }
 }
