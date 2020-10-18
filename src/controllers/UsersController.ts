@@ -10,7 +10,7 @@ export class UsersController {
 
     @get("/user/:user_id")
     async getUserData(req: Request) {
-        let user_id = parseInt(req.params["article_id"]);
+        let user_id = parseInt(req.params["user_id"]);
         let userData = await this.model.getUserData(user_id);
         return userData;
     }
