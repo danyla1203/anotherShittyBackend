@@ -20,6 +20,7 @@ export class Bootstrap {
         let handlers = [];
         for (let i = 0; i < this.controllers.length; i++) {
             let metaKeys = Reflect.getMetadataKeys(this.controllers[i]);
+
             for (let k = 0; k < metaKeys.length; k++) {
                 let handler: handler = Reflect.getMetadata(metaKeys[k], this.controllers[i]);
                 handler.handlerFunc = handler.handlerFunc.bind(this.controllers[i]);
@@ -43,9 +44,8 @@ export class Bootstrap {
 
     getHandler(url: string, method: string, handlers: handler[]): handler | undefined {
         let splitedUrl = url.substring(1).split("/");
-
         for (let i = 0; i < handlers.length; i++) {
-            if (method !== handlers[i].method) {
+            if (method != handlers[i].method) {
                 continue;
             }
             let splitedHandlerPath = handlers[i].path.substring(1).split("/");
@@ -63,6 +63,7 @@ export class Bootstrap {
 
     start(expressApp: Application) {
         let handlers: handler[] = this.getAllHandlersFromControllers();
+
         const uploads = multer();
 
         expressApp.use(express.json());
@@ -75,7 +76,7 @@ export class Bootstrap {
             let handler: handler | undefined = this.getHandler(url, method, handlers);
 
             if (typeof handler == "undefined") {
-                res.status(404).send("<h1>Error 404</h1>");
+                res.status(404).send("<h1>Error 404!</h1>");
                 return;
             }
             this.setParamsFromUri(url, handler.path, req);

@@ -26,6 +26,7 @@ export class ArticleController {
         let articles = this.articleModel.findUserArticles(user_id);
         return articles;
     }
+
     @post("/add-article")
     async addArticle(req: Request) {
         let user: UserJwt = this.authModel.checkAccessToken(req.headers.authorization);
@@ -43,6 +44,7 @@ export class ArticleController {
         let article_id = parseInt(req.params["article_id"]);
         this.articleModel.deleteArticle(user.user_id, article_id);
     }
+
     @put("/article/:article_id")
     updateArticle(req: Request) {
         let user: UserJwt = this.authModel.checkAccessToken(req.headers.authorization);
@@ -54,5 +56,4 @@ export class ArticleController {
         };
         this.articleModel.updateArticle(articleData);
     }
-
 }

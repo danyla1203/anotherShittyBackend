@@ -20,7 +20,7 @@ export class NotFoundErr extends  CustomError {
     }
 }
 
-export class NoSuchUser extends  CustomError {
+export class NoSuchUser extends CustomError {
     constructor() {
         super({
             statusCode:401,
