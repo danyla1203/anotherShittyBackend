@@ -54,7 +54,8 @@ export class BadAccessToken extends CustomError {
     }
 }
 export class DatabaseError extends CustomError {
-    constructor() {
+    constructor(error?: Error) {
+        console.log(error);
         super({
             statusCode: 500,
             statusText: "Server Error"
