@@ -11,7 +11,7 @@ export interface AuthorizationRepositoryI {
     deleteSession(session_id: string): void;
 }
 
-type UserJwt = {
+export type UserJwt = {
     user_id: number,
     name: string
 }
