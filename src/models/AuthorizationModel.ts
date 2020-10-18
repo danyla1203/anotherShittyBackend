@@ -66,7 +66,7 @@ export class AuthorizationModel {
         }
     }
 
-    async createUser(name: string, password: string, country: string): number {
+    async createUser(name: string, password: string, country: string): Promise<number> {
         let user_id = await this.authRepository.insertUser(name, password, country);
         return user_id;
     }
