@@ -18,6 +18,12 @@ export class UsersRepository implements UsersRepoI{
         }
     }
     async getUsersList(): Promise<UserPublicData[]> {
-        return [];
+        try {
+            let result = await this.db.query("select name, country from users");
+            let users = result.rows;
+            return users;
+        } catch (e) {
+            throw new DatabaseError();
+        }
     }
 }
