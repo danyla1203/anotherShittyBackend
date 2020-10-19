@@ -1,12 +1,7 @@
-import {ArticleRepositoryI, IncomingArticleData} from "../models/ArticleModel";
+import {Article, ArticleRepositoryI, IncomingArticleData} from "../models/ArticleModel";
 import {Client} from "pg";
 import {DatabaseError} from "../lib/Error";
 import {RedisClient} from "redis";
-
-type Article = {
-    article_id: number;
-    author_id: number
-}
 
 export class ArticleRepository implements ArticleRepositoryI {
     db: Client;
@@ -18,7 +13,7 @@ export class ArticleRepository implements ArticleRepositoryI {
 
     async findArticle(article_id: number): Promise<Article | null> {
         try {
-            let articleFromCache = await this.redis.hgetall(article_id + "");
+            let articleFromCache: Article | null = await this.redis.hgetall(article_id + "");
             if (articleFromCache) {
                 return articleFromCache;
             }
@@ -26,7 +21,7 @@ export class ArticleRepository implements ArticleRepositoryI {
             let resultFromDb = await this.db.query(`select * from articles where article_id='${article_id}'`);
             let article: Article = resultFromDb.rows[0];
             if (article) {
-                this.redis.hmset(article_id + "", article);
+                this.redis.hmset(`${article_id}`, article);
                 return article;
             } else {
                 return null;
@@ -36,7 +31,16 @@ export class ArticleRepository implements ArticleRepositoryI {
         }
     }
 
-    async findUserArticles(user_id: number) {
+    async getAllArticles(): Promise<Article[]> {
+        try {
+            let result = await this.db.query("select * from articles");
+            return result.rows;
+        } catch (e) {
+            throw new DatabaseError(e);
+        }
+    }
+
+    async findUserArticles(user_id: number): Promise<Article[] | null> {
         try {
             let result = await this.db.query(`select * from articles where author_id='${user_id}'`);
             let articles: Article[] = result.rows[0];

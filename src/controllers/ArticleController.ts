@@ -13,6 +13,11 @@ export class ArticleController {
         this.authModel = authModel;
     }
 
+    @get("/articles")
+    async getAllArticles() {
+        return this.articleModel.getArticles();
+    }
+
     @get("/article/:article_id")
     article(req: Request) {
         let article_id: number = parseInt(req.params["article_id"]);

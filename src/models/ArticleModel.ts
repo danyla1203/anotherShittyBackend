@@ -1,11 +1,18 @@
 import {DatabaseError, InvalidData, NotFoundErr} from "../lib/Error";
 
 export interface ArticleRepositoryI {
-    findArticle(article_id: number): any;
-    findUserArticles(user_id: number): any;
+    findArticle(article_id: number): Promise<Article | null>;
+    findUserArticles(user_id: number): Promise<Article[] | null>;
     appendArticle(articleData: IncomingArticleData): void;
     deleteArticle(article_id: number): void;
     updateArticle(article_id: number, title?: string, text?: string): void;
+    getAllArticles(): Promise<Article[]>
+}
+
+export type Article = {
+    author_id: number;
+    title?: string;
+    text?: string;
 }
 
 export type IncomingArticleData = {
@@ -79,5 +86,9 @@ export class ArticleModel {
         } else {
             throw new NotFoundErr("Article not found");
         }
+    }
+
+    async getArticles() {
+        return await this.repository.getAllArticles();
     }
 }
