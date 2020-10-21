@@ -20,8 +20,13 @@ export class UserController {
     }
 
     @put("/user")
-    updateUserData(req: Request) {
+    async updateUserData(req: Request) {
+        const copyUserData = Object.assign({}, req.body);
+        let token = req.headers.authorization;
+        const user_id = this.authModel.checkAccessToken(token).user_id;
 
+        let newUser = await this.model.updateUser(user_id, copyUserData);
+        return { ok: true, user: newUser };
     }
 
     @Delete("/user")
