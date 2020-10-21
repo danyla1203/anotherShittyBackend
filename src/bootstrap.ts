@@ -70,6 +70,14 @@ export class Bootstrap {
         expressApp.use(express.urlencoded({ extended: true }));
         expressApp.use(uploads.array());
 
+        if (!process.env.PROD) {
+            expressApp.use((req: Request, res: Response, next: Function) => {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
+                next();
+            });
+        }
+
         expressApp.all("*", async (req: Request, res: Response) => {
             let url = req.url;
             let method = req.method;
