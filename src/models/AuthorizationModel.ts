@@ -24,14 +24,14 @@ export class AuthorizationModel {
         this.authRepository = repo;
     }
 
-    createSeesionId(ip: string, userAgent: string): string {
+    private createSeesionId(ip: string, userAgent: string): string {
         let session_id = crypto.createHash("sha256")
             .update(ip + userAgent)
             .digest("hex");
         return session_id;
     }
 
-    createAccessToken(user_id: number, userName: string) {
+    private createAccessToken(user_id: number, userName: string) {
         let payload: UserJwt = {
             user_id: user_id,
             name: userName
@@ -42,7 +42,7 @@ export class AuthorizationModel {
             { expiresIn: 60 * 30 }
         );
     }
-    createRefreshToken(): string {
+    private createRefreshToken(): string {
         return "";
     }
 
