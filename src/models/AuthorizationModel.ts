@@ -36,7 +36,11 @@ export class AuthorizationModel {
             user_id: user_id,
             name: userName
         };
-        return jwt.sign(payload, process.env.JWT_KEY || "test_key");
+        return jwt.sign(
+            payload,
+            process.env.JWT_KEY || "test_key",
+            { expiresIn: 60 * 30 }
+        );
     }
     createRefreshToken(): string {
         return "";
