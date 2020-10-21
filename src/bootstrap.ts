@@ -49,6 +49,10 @@ export class Bootstrap {
                 continue;
             }
             let splitedHandlerPath = handlers[i].path.substring(1).split("/");
+            //if pattern and url have different lengths
+            if (splitedHandlerPath.length != splitedUrl.length) {
+                continue;
+            }
             for (let k = 0; k < splitedUrl.length + 1; k++) {
                 if (k == splitedUrl.length) {
                     return handlers[i];
@@ -68,7 +72,7 @@ export class Bootstrap {
 
         expressApp.use(express.json());
         expressApp.use(express.urlencoded({ extended: true }));
-        expressApp.use(uploads.array());
+        expressApp.use(uploads.array("d"));
 
         if (!process.env.PROD) {
             expressApp.use((req: Request, res: Response, next: Function) => {
