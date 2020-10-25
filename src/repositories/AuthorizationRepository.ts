@@ -25,7 +25,7 @@ export class AuthorizationRepository implements AuthorizationRepositoryI {
 
     async findUserFromDb(userName: string): Promise<User | null> {
         try {
-            let result: QueryResult = await this.database.query(`select * from users where user_name='${userName}'`);
+            let result: QueryResult = await this.database.query(`select * from users where name='${userName}'`);
             let user: User = result.rows[0];
             if (user) {
                 return user;
@@ -33,8 +33,7 @@ export class AuthorizationRepository implements AuthorizationRepositoryI {
                 return null;
             }
         } catch (e) {
-            console.log(e.error);
-            return null;
+            throw new DatabaseError();
         }
     }
     setTokens(session_id: string, access: string, refresh: string) {
