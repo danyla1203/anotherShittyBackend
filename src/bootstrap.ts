@@ -78,6 +78,7 @@ export class Bootstrap {
             expressApp.use((req: Request, res: Response, next: Function) => {
                 res.setHeader('Access-Control-Allow-Origin', '*');
                 res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
+                res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
                 next();
             });
         }
@@ -97,7 +98,8 @@ export class Bootstrap {
                 let result: any = await handler.handlerFunc(req, res);
                 res.json(result);
             } catch (e) {
-                res.json(e.errorData);
+                res.statusCode = e.errorData.statusCode;
+                res.json(e.errorData)
             }
         })
     }
