@@ -43,15 +43,14 @@ export class ArticleRepository implements ArticleRepositoryI {
     async findUserArticles(user_id: number): Promise<Article[] | null> {
         try {
             let result = await this.db.query(`select * from articles where author_id='${user_id}'`);
-            let articles: Article[] = result.rows[0];
-            if (articles.length > 0) {
-                return articles;
+            if (result.rows.length > 0) {
+                return result.rows[0];
             } else {
                 return null;
             }
         }
         catch (e) {
-            throw new DatabaseError();
+            throw new DatabaseError(e);
         }
     }
     async appendArticle(articleData: IncomingArticleData) {
