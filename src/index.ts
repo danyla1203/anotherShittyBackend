@@ -17,8 +17,9 @@ import {UsersController} from "./controllers/UsersController";
 import {UserModel} from "./models/UserModel";
 import {UserController} from "./controllers/UserController";
 import {UserRepository} from "./repositories/UserRepository";
+import * as http from "http";
 
-const app = express();
+const app = http.createServer();
 dotenv.config();
 
 //create connection to data storage
