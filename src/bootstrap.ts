@@ -32,6 +32,7 @@ export class Bootstrap {
     setParamsFromUri(url: string, pattern: string, req: Request) {
         let splitedUrl = url.substring(1).split("/");
         let splitedPattern = pattern.substring(1).split("/");
+        req.params = {};
         for (let i = 0; i < splitedPattern.length; i++) {
             if (splitedPattern[i][0] == ":") {
                 let paramName = splitedPattern[i].substring(1);
@@ -72,7 +73,7 @@ export class Bootstrap {
             let method = req.method;
             let handler: handler | undefined = this.getHandler(url, method, handlers);
 
-            if (typeof handler == "undefined") {
+            if (!handler) {
                 res.statusCode = 404;
                 res.end("<h1>Error 404!</h1>");
                 return;
