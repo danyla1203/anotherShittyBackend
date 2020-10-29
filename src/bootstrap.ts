@@ -1,7 +1,6 @@
-import * as multer from "multer";
-import * as express from "express";
-
-import {Application, Request, Response} from "express";
+import * as http from "http";
+import {Request} from "./lib/Request";
+import {Response} from "./lib/Response";
 
 type handler = {
     method: string,
@@ -65,42 +64,28 @@ export class Bootstrap {
         }
     }
 
-    start(expressApp: Application) {
+    start(app: http.Server) {
         let handlers: handler[] = this.getAllHandlersFromControllers();
 
-        const uploads = multer();
-
-        expressApp.use(express.json());
-        expressApp.use(express.urlencoded({ extended: true }));
-        expressApp.use(uploads.array("d"));
-
-        if (!process.env.PROD) {
-            expressApp.use((req: Request, res: Response, next: Function) => {
-                res.setHeader('Access-Control-Allow-Origin', '*');
-                res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
-                res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-                next();
-            });
-        }
-
-        expressApp.all("*", async (req: Request, res: Response) => {
+        app.on("request", async (req: Request, res: Response) => {
             let url = req.url;
             let method = req.method;
             let handler: handler | undefined = this.getHandler(url, method, handlers);
 
             if (typeof handler == "undefined") {
-                res.status(404).send("<h1>Error 404!</h1>");
+                res.statusCode = 404;
+                res.end("<h1>Error 404!</h1>");
                 return;
             }
             this.setParamsFromUri(url, handler.path, req);
 
             try {
                 let result: any = await handler.handlerFunc(req, res);
-                res.json(result);
+                res.end(JSON.stringify(result));
             } catch (e) {
                 res.statusCode = e.errorData.statusCode;
-                res.json(e.errorData)
+                res.end(JSON.stringify(e.errorData));
             }
-        })
+        });
     }
 }
