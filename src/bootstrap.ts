@@ -65,6 +65,19 @@ export class Bootstrap {
         }
     }
 
+    handlePost(req: Request) {
+        return new Promise((resolve, reject) => {
+            let data = "";
+            req.on("data", (chunk) => {
+                data += chunk;
+            });
+            req.on("end", () => {
+                req.body = data;
+                resolve();
+            })
+        })
+    }
+
     start(app: http.Server) {
         let handlers: handler[] = this.getAllHandlersFromControllers();
 
@@ -79,6 +92,8 @@ export class Bootstrap {
                 return;
             }
             this.setParamsFromUri(url, handler.path, req);
+            await this.handlePost(req);
+
 
             try {
                 let result: any = await handler.handlerFunc(req, res);
