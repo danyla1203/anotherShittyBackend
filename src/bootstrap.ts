@@ -1,6 +1,7 @@
 import * as http from "http";
 import {Request} from "./lib/Request";
 import {Response} from "./lib/Response";
+import * as fs from "fs";
 
 type handler = {
     method: string,
@@ -72,7 +73,11 @@ export class Bootstrap {
                 data += chunk;
             });
             req.on("end", () => {
-                req.body = data;
+                req.body = new Map();
+                data.split("&").map((keyValue) => {
+                    let keyValArr = keyValue.split("=");
+                    req.body.set(keyValArr[0], keyValArr[1]);
+                });
                 resolve();
             })
         })
