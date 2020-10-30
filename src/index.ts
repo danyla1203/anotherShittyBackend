@@ -18,6 +18,7 @@ import {UserModel} from "./models/UserModel";
 import {UserController} from "./controllers/UserController";
 import {UserRepository} from "./repositories/UserRepository";
 import * as http from "http";
+import {PostBody} from "./lib/PostBody";
 
 const app = http.createServer();
 dotenv.config();
@@ -59,7 +60,7 @@ const controllers = [
     new UsersController(usersModel),
     new UserController(userModel, authModel)
 ];
-const bootstrap = new Bootstrap(controllers);
+const bootstrap = new Bootstrap(controllers, new PostBody());
 
 bootstrap.start(app);
 

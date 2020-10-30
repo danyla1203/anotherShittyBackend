@@ -1,7 +1,7 @@
 import * as http from "http";
 import {Request} from "./lib/Request";
 import {Response} from "./lib/Response";
-import * as fs from "fs";
+import {PostBody} from "./lib/PostBody";
 
 type handler = {
     method: string,
@@ -11,9 +11,11 @@ type handler = {
 
 export class Bootstrap {
     controllers: any[];
+    PostBody: PostBody;
 
-    constructor(controllers: any[]) {
+    constructor(controllers: any[], postBody: PostBody) {
         this.controllers = controllers;
+        this.PostBody = postBody;
     }
 
     getAllHandlersFromControllers(): handler[] {
@@ -97,8 +99,7 @@ export class Bootstrap {
                 return;
             }
             this.setParamsFromUri(url, handler.path, req);
-            await this.handlePost(req);
-
+            await this.PostBody.handle(req);
 
             try {
                 let result: any = await handler.handlerFunc(req, res);
