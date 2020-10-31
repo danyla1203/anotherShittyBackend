@@ -10,7 +10,10 @@ export class UsersRepository implements UsersRepoI{
 
     async getUserData(user_id: number): Promise<UserPublicData | null> {
         try {
-            let result = await this.db.query(`select name, country from users where user_id = ${user_id}`);
+            let result = await this.db.query(
+                `select name, country from users where user_id = $1`,
+                [ user_id ]
+            );
             let user: UserPublicData | null = result.rows[0];
             return user;
         } catch (e) {
