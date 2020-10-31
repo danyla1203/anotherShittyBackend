@@ -43,7 +43,7 @@ export class ArticleModel {
             throw new NotFoundErr("Article not found")
         }
     }
-    async findUserArticles(user_id: number): any {
+    async findUserArticles(user_id: number): Promise<any> {
         let articles = await this.repository.findUserArticles(user_id);
         if (articles) {
             return articles;
