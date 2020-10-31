@@ -68,23 +68,6 @@ export class Bootstrap {
         }
     }
 
-    handlePost(req: Request) {
-        return new Promise((resolve, reject) => {
-            let data = "";
-            req.on("data", (chunk) => {
-                data += chunk;
-            });
-            req.on("end", () => {
-                req.body = new Map();
-                data.split("&").map((keyValue) => {
-                    let keyValArr = keyValue.split("=");
-                    req.body.set(keyValArr[0], keyValArr[1]);
-                });
-                resolve();
-            })
-        })
-    }
-
     start(app: http.Server) {
         let handlers: handler[] = this.getAllHandlersFromControllers();
 

@@ -2,6 +2,7 @@
   "name": "anotherBitch",
   "version": "0.0.1",
   "dependencies": {
+    "busboy": "^0.2.14",
     "dotenv": "^8.2.0",
     "express": "latest",
     "fastify": "^3.7.0",
@@ -12,6 +13,7 @@
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
+    "@types/busboy": "^0.2.3",
     "@types/express": "latest",
     "@types/jest": "^26.0.14",
     "@types/jsonwebtoken": "^8.5.0",
