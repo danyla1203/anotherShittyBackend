@@ -46,6 +46,9 @@ export class PostBody {
     }
 
     public async handle(req: Request) {
+        if (req.method != "POST" && req.method != "PUT") {
+            return;
+        }
         let contentType = req.headers["content-type"];
         if (!contentType) {
             return null;
