@@ -12,8 +12,8 @@ export class AuthorizationController {
 
     @post("/login")
     async login(req: Request, res: Response) {
-        let userName = req.body["name"];
-        let password = req.body["password"];
+        let userName = req.body.get("name");
+        let password = req.body.get("password");
 
         const userData = await this.authModel.verifyUserLogin(userName, password);
         let session_id = this.authModel.createSession(req.ip, req.headers["user-agent"] || "");
@@ -33,9 +33,9 @@ export class AuthorizationController {
 
     @post("/signup")
     async signup(req: Request, res: Response) {
-        let name = req.body["name"];
-        let password = req.body["password"];
-        let country = req.body["country"];
+        let name = req.body.get("name");
+        let password = req.body.get("password");
+        let country = req.body.get("country");
 
         //check data and create new user in db
         await this.authModel.checkData(name, password, country);
@@ -50,6 +50,5 @@ export class AuthorizationController {
         res.cookie("s_id", session_id,  { httpOnly: true });
         res.cookie("refresh_token", refresh, {  maxAge: 9000000, httpOnly: true });
         return { accessToken: access };
-
     }
 }
