@@ -4,5 +4,5 @@ export interface Request extends http.IncomingMessage {
     url: string;
     method: string
     params: any,
-    body: any,
+    body: Map<string, any>,
 }
