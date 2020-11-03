@@ -13,7 +13,7 @@ export class ArticleRepository implements ArticleRepositoryI {
 
     async findArticle(article_id: number): Promise<Article | null> {
         try {
-            let articleFromCache: Article | null = await this.redis.hgetall(article_id + "");
+            let articleFromCache: Article | null = await this.redis.hgetall(`articles:${article_id}`);
             if (articleFromCache) {
                 return articleFromCache;
             }
@@ -21,7 +21,7 @@ export class ArticleRepository implements ArticleRepositoryI {
             let resultFromDb = await this.db.query(`select * from articles where article_id='${article_id}'`);
             let article: Article = resultFromDb.rows[0];
             if (article) {
-                this.redis.hmset(`${article_id}`, article);
+                this.redis.hmset(`articles:${article_id}`, article);
                 return article;
             } else {
                 return null;
