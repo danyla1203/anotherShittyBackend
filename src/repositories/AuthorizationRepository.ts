@@ -41,7 +41,7 @@ export class AuthorizationRepository implements AuthorizationRepositoryI {
             "accessToken": access,
             "refreshToken": refresh
         };
-        this.redis.hmset(session_id, tokensPair);
+        this.redis.hmset(`users_sessions:${session_id}`, tokensPair);
     }
 
     async insertUser(name: string, password: string, country: string) {
