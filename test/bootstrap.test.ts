@@ -1,7 +1,8 @@
 import {Request, Response} from "express";
 import {Bootstrap} from "../src/bootstrap";
+import {PostBody} from "../src/lib/PostBody";
 
-const bootstrapTest = new Bootstrap([]);
+const bootstrapTest = new Bootstrap([], new PostBody());
 
 test("handler", () => {
     let handlers = [
