@@ -11,7 +11,7 @@ export function get(path: string) {
             path: path,
             handlerFunc: funcDescriptor.value
         };
-        Reflect.defineMetadata(path, handler, target);
+        Reflect.defineMetadata(`${path}|${methodName}`, handler, target);
     }
 }
 export function post(path: string) {
@@ -25,7 +25,7 @@ export function post(path: string) {
             path: path,
             handlerFunc: funcDescriptor.value
         };
-        Reflect.defineMetadata(path, handler, target);
+        Reflect.defineMetadata(`${path}|${methodName}`, handler, target);
     }
 }
 
@@ -40,7 +40,7 @@ export function Delete(path: string) {
             path: path,
             handlerFunc: funcDescriptor.value
         };
-        Reflect.defineMetadata(path, handler, target);
+        Reflect.defineMetadata(`${path}|${methodName}`, handler, target);
     }
 }
 
@@ -55,7 +55,7 @@ export function put(path: string) {
             path: path,
             handlerFunc: funcDescriptor.value
         };
-        Reflect.defineMetadata(path, handler, target);
+        Reflect.defineMetadata(`${path}|${methodName}`, handler, target);
     }
 }
 
