@@ -3,10 +3,10 @@ import {Request} from "./lib/Request";
 import {Response} from "./lib/Response";
 import {PostBody} from "./lib/PostBody";
 
-type handler = {
+export type handler = {
     method: string,
     path: string,
-    handlerFunc: (req?: Request, res?: Response) => any
+    handlerFunc: (req?: Request, res?: Response) => any | void
 }
 
 export class Bootstrap {
@@ -70,7 +70,6 @@ export class Bootstrap {
 
     start(app: http.Server) {
         let handlers: handler[] = this.getAllHandlersFromControllers();
-
         app.on("request", async (req: Request, res: Response) => {
             let url = req.url;
             let method = req.method;
@@ -81,7 +80,7 @@ export class Bootstrap {
                 res.end("<h1>Error 404!</h1>");
                 return;
             }
-            this.setParamsFromUri(url, handler.path, req);
+            await this.setParamsFromUri(url, handler.path, req);
             await this.PostBody.handle(req);
 
             try {
